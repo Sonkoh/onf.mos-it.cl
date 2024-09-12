@@ -1,5 +1,5 @@
 @php
-    date_default_timezone_set('America/Santiago');
+date_default_timezone_set('America/Santiago');
 @endphp
 <!DOCTYPE html>
 <html lang="es">
@@ -17,6 +17,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
     <link rel="stylesheet" href="/template/assets/vendor/quill/dist/quill.snow.css">
     <link rel="preload" href="/template/assets/css/theme.min.css" data-hs-appearance="default" as="style">
     <link rel="preload" href="/template/assets/css/theme-dark.min.css" data-hs-appearance="dark" as="style">
+    @yield('head')  
     <script>
         window.hs_config = {
             "autopath": "@@autopath",
@@ -193,6 +194,16 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
 <link rel="stylesheet" href="/template/assets/css/theme.min.css" data-hs-current-theme="stylesheet">
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset">
+    <style>
+        #loader {
+            display: flex;
+        }
+    </style>
+    <div style="position: fixed; width: 100vw; height: 100vh; background: var(--bs-body-bg); top: 0; left: 0; z-index: 1; display: flex; align-items: center; justify-content: center; display: none" id="loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
     <script src="/template/assets/js/hs.theme-appearance.js"></script>
 
@@ -201,188 +212,188 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
 
 
     @if (auth()->user()->id == 1 || env('APP_ENV') == 'local')
-        <aside
-            class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-white navbar-vertical-aside-initialized">
-            <div class="navbar-vertical-container">
-                <div class="navbar-vertical-footer-offset">
-                    <a class="navbar-brand" href="/" aria-label="MOS-iT">
-                        <img class="navbar-brand-logo" src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png"
-                            alt="MOS-iT" data-hs-theme-appearance="default"
-                            style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
-                        <img class="navbar-brand-logo"
-                            src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png" alt="MOS-iT"
-                            data-hs-theme-appearance="dark"
-                            style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
-                        <img class="navbar-brand-logo-mini" src="/favicon.png" alt="MOS-iT"
-                            data-hs-theme-appearance="default">
-                        <img class="navbar-brand-logo-mini" src="/favicon.png" alt="MOS-iT"
-                            data-hs-theme-appearance="dark">
-                    </a>
-                    <button type="button" class="js-navbar-vertical-aside-toggle-invoker navbar-aside-toggler"
-                        style="opacity: 1;">
-                        <i class="bi-arrow-bar-left navbar-toggler-short-align"
-                            data-bs-template="<div class=&quot;tooltip d-none d-md-block&quot; role=&quot;tooltip&quot;><div class=&quot;arrow&quot;></div><div class=&quot;tooltip-inner&quot;></div></div>"
-                            data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Collapse"
-                            data-bs-original-title="Collapse"></i>
-                        <i class="bi-arrow-bar-right navbar-toggler-full-align"
-                            data-bs-template="<div class=&quot;tooltip d-none d-md-block&quot; role=&quot;tooltip&quot;><div class=&quot;arrow&quot;></div><div class=&quot;tooltip-inner&quot;></div></div>"
-                            data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Expand"
-                            data-bs-original-title="Expand"></i>
-                    </button>
-                    <div class="navbar-vertical-content">
-                        <div id="navbarVerticalMenu" class="nav nav-pills nav-vertical card-navbar-nav">
-                            <span class="dropdown-header mt-4">Páginas</span>
-                            <a class="nav-link" href="/">
-                                <i class="bi-house-door nav-icon"></i>
-                                <span class="nav-link-title">Inicio</span>
+    <aside
+        class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-white navbar-vertical-aside-initialized">
+        <div class="navbar-vertical-container">
+            <div class="navbar-vertical-footer-offset">
+                <a class="navbar-brand" href="/" aria-label="MOS-iT">
+                    <img class="navbar-brand-logo" src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png"
+                        alt="MOS-iT" data-hs-theme-appearance="default"
+                        style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
+                    <img class="navbar-brand-logo"
+                        src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png" alt="MOS-iT"
+                        data-hs-theme-appearance="dark"
+                        style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
+                    <img class="navbar-brand-logo-mini" src="/favicon.png" alt="MOS-iT"
+                        data-hs-theme-appearance="default">
+                    <img class="navbar-brand-logo-mini" src="/favicon.png" alt="MOS-iT"
+                        data-hs-theme-appearance="dark">
+                </a>
+                <button type="button" class="js-navbar-vertical-aside-toggle-invoker navbar-aside-toggler"
+                    style="opacity: 1;">
+                    <i class="bi-arrow-bar-left navbar-toggler-short-align"
+                        data-bs-template="<div class=&quot;tooltip d-none d-md-block&quot; role=&quot;tooltip&quot;><div class=&quot;arrow&quot;></div><div class=&quot;tooltip-inner&quot;></div></div>"
+                        data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Collapse"
+                        data-bs-original-title="Collapse"></i>
+                    <i class="bi-arrow-bar-right navbar-toggler-full-align"
+                        data-bs-template="<div class=&quot;tooltip d-none d-md-block&quot; role=&quot;tooltip&quot;><div class=&quot;arrow&quot;></div><div class=&quot;tooltip-inner&quot;></div></div>"
+                        data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Expand"
+                        data-bs-original-title="Expand"></i>
+                </button>
+                <div class="navbar-vertical-content">
+                    <div id="navbarVerticalMenu" class="nav nav-pills nav-vertical card-navbar-nav">
+                        <span class="dropdown-header mt-4">Páginas</span>
+                        <a class="nav-link" href="/">
+                            <i class="bi-house-door nav-icon"></i>
+                            <span class="nav-link-title">Inicio</span>
+                        </a>
+                        @if (auth()->user()->group == 'admin')
+                        <a class="nav-link" href="/users">
+                            <i class="bi-person nav-icon"></i>
+                            <span class="nav-link-title">Usuarios</span>
+                        </a>
+                        @endif
+                        <div class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="#navbarVerticalMenuPagesAPISMenu"
+                                role="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarVerticalMenuPagesAPISMenu" aria-expanded="true"
+                                aria-controls="navbarVerticalMenuPagesAPISMenu">
+                                <i class="bi-key nav-icon"></i>
+                                <span class="nav-link-title">APIS</span>
                             </a>
-                            @if (auth()->user()->group == 'admin')
-                                <a class="nav-link" href="/users">
-                                    <i class="bi-person nav-icon"></i>
-                                    <span class="nav-link-title">Usuarios</span>
-                                </a>
-                            @endif
-                            <div class="nav-item">
-                                <a class="nav-link dropdown-toggle" href="#navbarVerticalMenuPagesAPISMenu"
-                                    role="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarVerticalMenuPagesAPISMenu" aria-expanded="true"
-                                    aria-controls="navbarVerticalMenuPagesAPISMenu">
-                                    <i class="bi-key nav-icon"></i>
-                                    <span class="nav-link-title">APIS</span>
-                                </a>
 
-                                <div id="navbarVerticalMenuPagesAPISMenu" class="nav-collapse collapse"
-                                    data-bs-parent="#navbarVerticalMenuPagesMenu" hs-parent-area="#navbarVerticalMenu">
-                                    @foreach ($apis as $api)
-                                        @php
-                                            $hasPermissions = false;
-                                            foreach ($vnos as $vno_base) {
-                                                if (in_array('API_' . $api->id . '.' . $vno_base->id, json_decode(auth()->user()->permissions, true))) {
-                                                    $hasPermissions = true;
-                                                }
-                                            }
-                                        @endphp
-                                        @if (!$hasPermissions)
-                                            @continue
-                                        @endif
-                                        <a class="nav-link " href="/apis/{{ $api->identifier }}">{{ $api->name }}</a>
-                                    @endforeach
+                            <div id="navbarVerticalMenuPagesAPISMenu" class="nav-collapse collapse"
+                                data-bs-parent="#navbarVerticalMenuPagesMenu" hs-parent-area="#navbarVerticalMenu">
+                                @foreach ($apis as $api)
+                                @php
+                                $hasPermissions = false;
+                                foreach ($vnos as $vno_base) {
+                                if (in_array('API_' . $api->id . '.' . $vno_base->id, json_decode(auth()->user()->permissions, true))) {
+                                $hasPermissions = true;
+                                }
+                                }
+                                @endphp
+                                @if (!$hasPermissions)
+                                @continue
+                                @endif
+                                <a class="nav-link " href="/apis/{{ $api->identifier }}">{{ $api->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <span class="dropdown-header mt-4">Cuenta</span>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="bi-lock nav-icon"></i>
+                            <span class="nav-link-title">Cambiar contraseña</span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="navbar-vertical-footer">
+                    <ul class="navbar-vertical-footer-list">
+                        <li class="navbar-vertical-footer-list-item">
+                            <div class="dropdown dropup">
+                                <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
+                                    id="selectThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-bs-dropdown-animation=""><i class="bi-brightness-high"></i></button>
+
+                                <div class="dropdown-menu navbar-dropdown-menu navbar-dropdown-menu-borderless"
+                                    aria-labelledby="selectThemeDropdown">
+                                    <a class="dropdown-item" href="#" data-icon="bi-moon-stars"
+                                        data-value="auto">
+                                        <i class="bi-moon-stars me-2"></i>
+                                        <span class="text-truncate" title="Auto">Auto</span>
+                                    </a>
+                                    <a class="dropdown-item active" href="#" data-icon="bi-brightness-high"
+                                        data-value="default">
+                                        <i class="bi-brightness-high me-2"></i>
+                                        <span class="text-truncate" title="Modo Claro">Modo Claro</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#" data-icon="bi-moon"
+                                        data-value="dark">
+                                        <i class="bi-moon me-2"></i>
+                                        <span class="text-truncate" title="Modo Oscuro">Modo Oscuro</span>
+                                    </a>
                                 </div>
                             </div>
-                            
-                            <span class="dropdown-header mt-4">Cuenta</span>
-                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                <i class="bi-lock nav-icon"></i>
-                                <span class="nav-link-title">Cambiar contraseña</span>
+
+                        </li>
+
+                        <li class="navbar-vertical-footer-list-item">
+                            <a href="/logout" class="btn btn-ghost-secondary btn-icon rounded-circle">
+                                <i class="bi-box-arrow-right"></i>
                             </a>
-                        </div>
 
-                    </div>
-                    <div class="navbar-vertical-footer">
-                        <ul class="navbar-vertical-footer-list">
-                            <li class="navbar-vertical-footer-list-item">
-                                <div class="dropdown dropup">
-                                    <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
-                                        id="selectThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        data-bs-dropdown-animation=""><i class="bi-brightness-high"></i></button>
+                            <!-- End Other Links -->
+                        </li>
 
-                                    <div class="dropdown-menu navbar-dropdown-menu navbar-dropdown-menu-borderless"
-                                        aria-labelledby="selectThemeDropdown">
-                                        <a class="dropdown-item" href="#" data-icon="bi-moon-stars"
-                                            data-value="auto">
-                                            <i class="bi-moon-stars me-2"></i>
-                                            <span class="text-truncate" title="Auto">Auto</span>
-                                        </a>
-                                        <a class="dropdown-item active" href="#" data-icon="bi-brightness-high"
-                                            data-value="default">
-                                            <i class="bi-brightness-high me-2"></i>
-                                            <span class="text-truncate" title="Modo Claro">Modo Claro</span>
-                                        </a>
-                                        <a class="dropdown-item" href="#" data-icon="bi-moon"
-                                            data-value="dark">
-                                            <i class="bi-moon me-2"></i>
-                                            <span class="text-truncate" title="Modo Oscuro">Modo Oscuro</span>
-                                        </a>
-                                    </div>
-                                </div>
+                        <li class="navbar-vertical-footer-list-item">
+                            <!-- Language -->
+                            <div class="dropdown dropup">
+                                <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
+                                    id="selectLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-bs-dropdown-animation="">
+                                    <img class="avatar avatar-xss avatar-circle"
+                                        src="/template/assets/vendor/flag-icon-css/flags/1x1/cl.svg"
+                                        alt="Chilean Flag">
+                                </button>
 
-                            </li>
-
-                            <li class="navbar-vertical-footer-list-item">
-                                <a href="/logout" class="btn btn-ghost-secondary btn-icon rounded-circle">
-                                    <i class="bi-box-arrow-right"></i>
-                                </a>
-
-                                <!-- End Other Links -->
-                            </li>
-
-                            <li class="navbar-vertical-footer-list-item">
-                                <!-- Language -->
-                                <div class="dropdown dropup">
-                                    <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
-                                        id="selectLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                        data-bs-dropdown-animation="">
-                                        <img class="avatar avatar-xss avatar-circle"
+                                <div class="dropdown-menu navbar-dropdown-menu-borderless"
+                                    aria-labelledby="selectLanguageDropdown">
+                                    <span class="dropdown-header">Seleccionar Idioma</span>
+                                    <a class="dropdown-item" href="#">
+                                        <img class="avatar avatar-xss avatar-circle me-2"
                                             src="/template/assets/vendor/flag-icon-css/flags/1x1/cl.svg"
-                                            alt="Chilean Flag">
-                                    </button>
-
-                                    <div class="dropdown-menu navbar-dropdown-menu-borderless"
-                                        aria-labelledby="selectLanguageDropdown">
-                                        <span class="dropdown-header">Seleccionar Idioma</span>
-                                        <a class="dropdown-item" href="#">
-                                            <img class="avatar avatar-xss avatar-circle me-2"
-                                                src="/template/assets/vendor/flag-icon-css/flags/1x1/cl.svg"
-                                                alt="Flag">
-                                            <span class="text-truncate" title="Español">Español</span>
-                                        </a>
-                                    </div>
+                                            alt="Flag">
+                                        <span class="text-truncate" title="Español">Español</span>
+                                    </a>
                                 </div>
+                            </div>
 
-                                <!-- End Language -->
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- End Footer -->
+                            <!-- End Language -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Footer -->
+            </div>
+        </div>
+    </aside>
+
+    <main id="content" role="main" class="main">
+        <!-- Content -->
+        <div class="content container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-end">
+                    @yield('top')
                 </div>
             </div>
-        </aside>
-
-        <main id="content" role="main" class="main">
-            <!-- Content -->
-            <div class="content container-fluid">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <div class="row align-items-end">
-                        @yield('top')
+            <div>
+                @yield('content')
+            </div>
+            <div class="footer">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col">
+                        <p class="fs-6 mb-0">© Mos-iT. <span class="d-none d-sm-inline-block">2024 Chile.</span>
+                        </p>
                     </div>
                 </div>
-                <div>
-                    @yield('content')
-                </div>
-                <div class="footer">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col">
-                            <p class="fs-6 mb-0">© Mos-iT. <span class="d-none d-sm-inline-block">2024 Chile.</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-        </main>
+    </main>
     @else
     <div class="content container-fluid">
         <div class="row justify-content-sm-center text-center py-10">
-          <div class="col-sm-7 col-md-5">
-            <img class="img-fluid mb-5" src="/template/assets/svg/illustrations/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="default">
-            <img class="img-fluid mb-5" src="/template/assets/svg/illustrations-light/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="dark">
-  
-            <h1>Aplicación en mantención!</h1>
-            <p>Vuelve a intentarlo más tarde</p>
-          </div>
+            <div class="col-sm-7 col-md-5">
+                <img class="img-fluid mb-5" src="/template/assets/svg/illustrations/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="default">
+                <img class="img-fluid mb-5" src="/template/assets/svg/illustrations-light/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="dark">
+
+                <h1>Aplicación en mantención!</h1>
+                <p>Vuelve a intentarlo más tarde</p>
+            </div>
         </div>
         <!-- End Row -->
-      </div>
+    </div>
     @endif
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasKeyboardShortcuts"
         aria-labelledby="offcanvasKeyboardShortcutsLabel">
@@ -2337,9 +2348,9 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('scripts')
-    
+
     @yield('modals')
-    
+
     <div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
@@ -2352,53 +2363,53 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
                     </div>
                 </div>
                 <div class="modal-body">
-                            <!-- Form -->
-                            <form id="changePasswordForm">
-                                <div class="row mb-4">
-                                    <label for="newPassword" class="col-sm-3 col-form-label form-label">Nueva contraseña</label>
-        
-                                    <div class="col-sm-9">
-                                        <input type="password" class="form-control" name="newPassword" id="newPassword"
-                                            placeholder="Ingresa una contraseña" aria-label="Ingresa una contraseña">
-                                    </div>
+                    <!-- Form -->
+                    <form id="changePasswordForm">
+                        <div class="row mb-4">
+                            <label for="newPassword" class="col-sm-3 col-form-label form-label">Nueva contraseña</label>
+
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" name="newPassword" id="newPassword"
+                                    placeholder="Ingresa una contraseña" aria-label="Ingresa una contraseña">
+                            </div>
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="row mb-4">
+                            <label for="confirmNewPasswordLabel" class="col-sm-3 col-form-label form-label">Confirmar
+                                contraseña</label>
+
+                            <div class="col-sm-9">
+                                <div class="mb-3">
+                                    <input type="password" class="form-control" name="confirmNewPassword"
+                                        id="confirmNewPasswordLabel" placeholder="Vuelve a ingresar la contraseña creada"
+                                        aria-label="Vuelve a ingresar la contraseña creada">
                                 </div>
-                                <!-- End Form -->
-        
-                                <!-- Form -->
-                                <div class="row mb-4">
-                                    <label for="confirmNewPasswordLabel" class="col-sm-3 col-form-label form-label">Confirmar
-                                        contraseña</label>
-        
-                                    <div class="col-sm-9">
-                                        <div class="mb-3">
-                                            <input type="password" class="form-control" name="confirmNewPassword"
-                                                id="confirmNewPasswordLabel" placeholder="Vuelve a ingresar la contraseña creada"
-                                                aria-label="Vuelve a ingresar la contraseña creada">
-                                        </div>
-        
-                                        <h5>Requisitos de la contraseña:</h5>
-        
-                                        <p class="fs-6 mb-2">Para mayor seguridad, procura que la contraseña cumpla con las siguientes
-                                            reglas:</p>
-        
-                                        <ul class="fs-6">
-                                            <li>Mínimo 8 cáracteres.</li>
-                                            <li>Minimo una letra minúscula.</li>
-                                            <li>Mínimo una letra mayúscula.</li>
-                                            <li>Mínimo un cáracter especial.</li>
-                                            <li>Mínimo un número.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- End Form -->
-        
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-danger" id="updatePasswordButton">Actualizar
-                                        contraseña</button>
-                                </div>
-                            </form>
-                            <!-- End Form -->
-                        <!-- End Body -->
+
+                                <h5>Requisitos de la contraseña:</h5>
+
+                                <p class="fs-6 mb-2">Para mayor seguridad, procura que la contraseña cumpla con las siguientes
+                                    reglas:</p>
+
+                                <ul class="fs-6">
+                                    <li>Mínimo 8 cáracteres.</li>
+                                    <li>Minimo una letra minúscula.</li>
+                                    <li>Mínimo una letra mayúscula.</li>
+                                    <li>Mínimo un cáracter especial.</li>
+                                    <li>Mínimo un número.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Form -->
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-danger" id="updatePasswordButton">Actualizar
+                                contraseña</button>
+                        </div>
+                    </form>
+                    <!-- End Form -->
+                    <!-- End Body -->
                 </div>
             </div>
         </div>

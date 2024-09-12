@@ -24,3 +24,9 @@ Route::get('/users', [UsersController::class, "home"]);
 Route::get('/managment/apis', [APIController::class, "ApiManagment"]);
 Route::get('/apis/{api:identifier}', [APIController::class, "apiCustom"]);
 Route::get('/flows', [FlowController::class, "home"]);
+Route::get('/flows/{vno}/{ambient}/{flow}/download', [FlowController::class, "download"]);
+
+Route::get('/admin/flows', [FlowController::class, "adminFlows"]);
+Route::post('/admin/flows', [FlowController::class, "createFlow"]);
+
+Route::get('/admin/flows/{flow}', [FlowController::class, 'view']);

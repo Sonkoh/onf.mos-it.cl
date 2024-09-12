@@ -16,7 +16,8 @@
         <a class="nav-link active" href="javascript:void(0)">Única</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0)">Masiva</a>
+        <input type="file" class="d-none" id="masive" accept=".xlsx">
+        <label for="masive" class="nav-link cursor-pointer">Masiva</label>
     </li>
 </ul>
 <div class="row">
@@ -44,12 +45,12 @@
                 </label>
             </div>
             <label for="flow" class="form-label">Flujo</label>
-            <select class="form-select mb-2" id="flow" disabled>
+            <select class="form-select mb-4" id="flow" disabled>
                 @foreach($flows as $flow)
                 <option value="{{$flow->id}}">{{$flow->name}}</option>
                 @endforeach
             </select>
-            <a href="javascript:downloadFlow()" class="text-link" target="_blank">Descargar Flujo</a>
+            <a href="javascript:downloadFlow()" class="btn btn-sm btn-secondary">Descargar Flujo (Excel)</a>
         </div>
         <div class="card p-4">
             <div id="inputs">
@@ -143,14 +144,62 @@
 </div>
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
     var flush;
     var responses = {};
     var n = 0;
 
     function downloadFlow() {
-        alert("a")
+        window.open(`/flows/${$('#vno').val()}/${$('[name="ambiente"]:checked').attr('data-value')}/${$('#flow').val()}/download`, "_blank");
     }
+
+    $('#masive').change(function() {
+        file = event.target.files[0];
+        if (!file) return;
+        $('#loader').fadeIn(500);
+
+        setTimeout(() => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {
+                    type: 'array'
+                });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const rows = XLSX.utils.sheet_to_json(sheet, {
+                    header: 1
+                });
+                rows.forEach((row, index) => {
+                    if (row[1] == 0 && row[2] == "onf_vno") {
+                        setTimeout(() => {
+                            $('#vno').val(row[3]).change();
+                        }, 200);
+                        return;
+                    }
+                    if (row[1] == 0 && row[2] == "onf_env") {
+                        $('input[name="ambiente"][data-value="' + row[3] + '"]').prop('checked', true);
+                        return;
+                    }
+                    if (row[1] == 0 && row[2] == "onf_flow") {
+                        $('#vno').val(row[3])
+                        return;
+                    }
+                });
+                setTimeout(() => {
+                    loadFlow(function() {
+                        rows.forEach((row, index) => {
+                            $(`[data-api="${parseInt(row[1])-1}"][data-key="${row[2]}"]`).val(row[3]);
+                        });
+                        $('#loader').fadeOut();
+                    });
+                }, 300);
+            };
+            reader.readAsArrayBuffer(file)
+        }, 500);
+        $('#masive').val('');
+    })
 
     function drawResponse(result, tab, son = 0) {
         for (var key in result) {
@@ -251,7 +300,7 @@
         }
     }
 
-    function loadFlow() {
+    function loadFlow(cb = function() {}) {
         $.ajax({
             type: "GET",
             url: "/api/v2/flow/request/" + $('#flow').val() + "/" + $('#vno').val(),
@@ -281,7 +330,7 @@
                     $('#inputs').append(`<div class="divider divider-center">${api.name}</div>`);
                     Object.keys(api.values[parseInt($('#vno').val())]).forEach(key => {
                         value = api.values[parseInt($('#vno').val())][key];
-                        $('#inputs').append(`<label for="ipt_${key}" class="form-label">${key}</label><input type="text" id="ipt_${key}" name="curl_data" class="form-control mb-2 zzzzz" value="${value}" data-key="${key}" data-api="${i}">`);
+                        $('#inputs').append(`<label for="ipt_${i}_${key}" class="form-label">${key}</label><input type="text" id="ipt_${i}_${key}"  name="curl_data" class="form-control mb-2 zzzzz" value="${value}" data-key="${key}" data-api="${i}">`);
                     });
                     $('#apis').append(`<div class="row" data-api="${i}">
                         <div class="col-4 d-flex align-items-center">${api.name}</div>
@@ -292,6 +341,7 @@
                 });
                 flush = response.apis;
                 $('#executeFlush').prop('disabled', false);
+                cb();
             }
         });
     }
