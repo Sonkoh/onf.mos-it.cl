@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class DynamicExport implements FromArray, WithStyles
@@ -105,6 +106,19 @@ class DynamicExport implements FromArray, WithStyles
                     ],
                 ],
             ]);
+        }
+        $row = 5;
+        $highestColumn = $sheet->getHighestColumn();
+        $columns = range('A', $highestColumn);
+
+        foreach ($columns as $column) {
+            $cell = $column . $row;
+
+            $validation = $sheet->getCell($cell)->getDataValidation();
+            $validation->setType(DataValidation::TYPE_CUSTOM)
+                ->setFormula1('COUNTIF($A$5:$' . $highestColumn . '$5, ' . $cell . ')=1')
+                ->setShowErrorMessage(true)
+                ->setErrorTitle('El Nombre del grupo debe ser único');
         }
     }
 }

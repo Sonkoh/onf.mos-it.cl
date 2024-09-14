@@ -196,7 +196,7 @@ class APIController extends Controller
                 $report->request = json_encode($request->curl_data ?? []);
                 $report->api = $api->id;
                 $report->vno = $vno->id;
-                $report->in_flow = (isset($request->in_flow) && $request->in_flow);
+                $report->in_flow = (isset($request->in_flow) ? $request->in_flow : 0);
                 $report->status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 $report->owner = auth()->user()->id;
                 $report->time = formatToTime(microtime(true) - $time_start);

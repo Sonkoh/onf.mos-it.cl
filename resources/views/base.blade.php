@@ -217,11 +217,11 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset">
                 <a class="navbar-brand" href="/" aria-label="MOS-iT">
-                    <img class="navbar-brand-logo" src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png"
+                    <img class="navbar-brand-logo" src="https://mos-it.cl/assets/img/mos-it.png"
                         alt="MOS-iT" data-hs-theme-appearance="default"
                         style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
                     <img class="navbar-brand-logo"
-                        src="https://mos-it.cl/wp2/wp-content/uploads/2023/12/PNG-Mos-It-2.png" alt="MOS-iT"
+                        src="https://mos-it.cl/assets/img/mos-it.png" alt="MOS-iT"
                         data-hs-theme-appearance="dark"
                         style="width: 100%;min-width: 8rem;max-width: 8rem;margin: auto;">
                     <img class="navbar-brand-logo-mini" src="/favicon.png" alt="MOS-iT"

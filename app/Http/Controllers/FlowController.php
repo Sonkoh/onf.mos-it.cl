@@ -22,7 +22,7 @@ class FlowController extends Controller
             "vnos" => Vno::all(),
             "apis" => Api::all(),
             "flows" => FlowType::all(),
-            "reports" => DB::select("SELECT apis.name, reports.ambient, reports.vno, users.email, reports.status, reports.time, reports.created_at FROM `reports` LEFT JOIN users ON users.id = reports.owner LEFT JOIN apis ON apis.id = reports.api WHERE reports.in_flow = 1 ORDER BY reports.id DESC LIMIT 20")
+            "reports" => DB::select("SELECT apis.name, reports.ambient, reports.vno, users.email, reports.status, reports.in_flow, reports.time, reports.created_at FROM `reports` LEFT JOIN users ON users.id = reports.owner LEFT JOIN apis ON apis.id = reports.api WHERE reports.in_flow > 0 ORDER BY reports.id DESC LIMIT 20")
         ]);
     }
     function adminFlows()
